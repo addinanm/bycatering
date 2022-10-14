@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934002492238",
+    "project_id": "bycatering-19539",
+    "storage_bucket": "bycatering-19539.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934002492238:android:c6c227b41a82813c44941f",
+        "android_client_info": {
+          "package_name": "com.example.bycatering"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934002492238-nrhp35k447o9va6kppdf0q5444p3hjej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEZGJBIgeIdSCJVogpVzKvD4-WW0_iWes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934002492238-nrhp35k447o9va6kppdf0q5444p3hjej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
