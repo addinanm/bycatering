@@ -1,0 +1,102 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+import 'daftar_makanan.dart';
+
+void main() async {
+  //do initialization to use firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(MaterialApp(
+      //remove the debug banner
+      debugShowCheckedModeBanner: false,
+      title: "Flutter Contact Firebase",
+      home: Admin()));
+}
+
+class Admin extends StatefulWidget {
+  @override
+  State<Admin> createState() => _AdminState();
+}
+
+class _AdminState extends State<Admin> {
+  @override
+  Widget build(BuildContext context) {
+    //The entry point for accessing a [FirebaseFirestore].
+    FirebaseFirestore firebase = FirebaseFirestore.instance;
+
+    //get collection from firebase, collection is table in mysql
+    CollectionReference users = firebase.collection('produk');
+
+    return Scaffold(
+      appBar: AppBar(
+          //make appbar with icon
+          title: Center(
+        child: Text("Menu Makanan"),
+      )),
+      body: FutureBuilder<QuerySnapshot>(
+        //data to be retrieved in the future
+        future: users.get(),
+        builder: (_, snapshot) {
+          //show if there is data
+          if (snapshot.hasData) {
+            // we take the document and pass it to a variable
+            var alldata = snapshot.data!.docs;
+
+            //if there is data, make list
+            return alldata.length != 0
+                ? ListView.builder(
+
+                    // displayed as much as the variable data alldata
+                    itemCount: alldata.length,
+
+                    //make custom item with list tile.
+                    itemBuilder: (_, index) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          //get first character of name
+                          child: Text(alldata[index]['gambar'][0]),
+                        ),
+                        title: Text(alldata[index]['nama_makanan'],
+                            style: TextStyle(fontSize: 20)),
+                        subtitle: Text(alldata[index]['harga'],
+                            style: TextStyle(fontSize: 16)),
+                        trailing: IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                //pass data to edit form
+                                MaterialPageRoute(
+                                    builder: (context) => FormPage(
+                                          id: snapshot.data!.docs[index].id,
+                                        )),
+                              );
+                            },
+                            icon: Icon(Icons.arrow_forward_rounded)),
+                      );
+                    })
+                : Center(
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  );
+          } else {
+            return Center(child: Text("Loading...."));
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FormPage()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
